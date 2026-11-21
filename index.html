@@ -6,7 +6,8 @@
   <title>Ouvrir dans Obsidian</title>
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; background: #1e1e2e; color: #cdd6f4; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 1.5rem; text-align: center; }
-    a.btn { display: inline-block; margin-top: 1rem; padding: 0.9rem 1.6rem; background: #7c3aed; color: #fff; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 1.05rem; }
+    a.btn { display: inline-block; margin-top: 0.8rem; padding: 0.9rem 1.6rem; background: #7c3aed; color: #fff; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 1.05rem; }
+    a.btn.sec { background: #313244; font-size: 0.9rem; padding: 0.6rem 1.2rem; }
     p.path { color: #a6adc8; word-break: break-word; max-width: 90vw; }
   </style>
 </head>
@@ -14,15 +15,30 @@
   <h2>Ouverture dans Obsidian…</h2>
   <p class="path" id="label"></p>
   <a class="btn" id="open-btn" href="#">Ouvrir dans Obsidian</a>
+  <a class="btn sec" id="alt-btn" href="#">Autre coffre</a>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const v = params.get("v") || "sync-personal-doc";
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const pcVault = params.get("v") || "sync-personal-doc";
+    const mobileVault = params.get("vm") || "obsidian-sync";
+    const primaryVault = isMobile ? mobileVault : pcVault;
+    const altVault = isMobile ? pcVault : mobileVault;
     const f = params.get("f") || "";
-    const uri = "obsidian://open?vault=" + encodeURIComponent(v) + (f ? "&file=" + encodeURIComponent(f) : "");
-    document.getElementById("label").textContent = f || v;
-    document.getElementById("open-btn").href = uri;
+
+    const makeUri = (vault) =>
+      "obsidian://open?vault=" + encodeURIComponent(vault) + (f ? "&file=" + encodeURIComponent(f) : "");
+
+    const primaryUri = makeUri(primaryVault);
+    const altUri = makeUri(altVault);
+
+    document.getElementById("label").textContent = (f || primaryVault) + " (" + primaryVault + ")";
+    document.getElementById("open-btn").href = primaryUri;
+    document.getElementById("open-btn").textContent = "Ouvrir (" + primaryVault + ")";
+    document.getElementById("alt-btn").href = altUri;
+    document.getElementById("alt-btn").textContent = "Ouvrir (" + altVault + ")";
+
     if (f) {
-      window.location.replace(uri);
+      window.location.replace(primaryUri);
     }
   </script>
 </body>
