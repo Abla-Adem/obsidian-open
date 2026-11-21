@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ouvrir dans Obsidian</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #1e1e2e; color: #cdd6f4; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 1.5rem; text-align: center; }
+    a.btn { display: inline-block; margin-top: 1rem; padding: 0.9rem 1.6rem; background: #7c3aed; color: #fff; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 1.05rem; }
+    p.path { color: #a6adc8; word-break: break-word; max-width: 90vw; }
+  </style>
+</head>
+<body>
+  <h2>Ouverture dans Obsidian…</h2>
+  <p class="path" id="label"></p>
+  <a class="btn" id="open-btn" href="#">Ouvrir dans Obsidian</a>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const v = params.get("v") || "sync-personal-doc";
+    const f = params.get("f") || "";
+    const uri = "obsidian://open?vault=" + encodeURIComponent(v) + (f ? "&file=" + encodeURIComponent(f) : "");
+    document.getElementById("label").textContent = f || v;
+    document.getElementById("open-btn").href = uri;
+    if (f) {
+      window.location.replace(uri);
+    }
+  </script>
+</body>
+</html>
