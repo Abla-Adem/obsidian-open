@@ -20,7 +20,7 @@
     const params = new URLSearchParams(window.location.search);
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const pcVault = params.get("v") || "sync-personal-doc";
-    const mobileVault = params.get("vm") || "obsidian-sync";
+    const mobileVault = params.get("vm") || "Obsidian-sync";
     const primaryVault = isMobile ? mobileVault : pcVault;
     const altVault = isMobile ? pcVault : mobileVault;
     const f = params.get("f") || "";
